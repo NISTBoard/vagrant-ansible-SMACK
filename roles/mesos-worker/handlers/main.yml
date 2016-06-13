@@ -1,0 +1,8 @@
+---
+
+- name: stop mesos master
+  service: name=mesos-master.service state=stopped
+- name: disable mesos master
+  service: name=mesos-master.service enabled=no
+- name: restart mesos slave
+  service: name=mesos-slave state=restarted

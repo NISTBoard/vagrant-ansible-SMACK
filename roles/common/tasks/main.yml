@@ -1,0 +1,8 @@
+---
+
+- name: build hosts file
+  # ansible_default_ipv4 is set to vagrant's NAT interface, so we use ansible_eth1.ipv4
+  lineinfile: dest=/etc/hosts regexp='.*{{ item }}$' line="{{ hostvars[item].ansible_eth1.ipv4.address }} {{item}}" state=present
+  when: hostvars[item].ansible_default_ipv4.address is defined
+  with_items: "{{ groups['all'] }}"
+

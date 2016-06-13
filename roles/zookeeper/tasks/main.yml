@@ -1,0 +1,18 @@
+---
+
+- name: add mesosphere repository
+  yum:
+    name: http://repos.mesosphere.com/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm
+    state: present
+- name: install packages
+  yum:
+    name: mesosphere-zookeeper
+    state: present
+- name: set zookeeper id
+  copy: content="{{ zookeeper_id }}" dest=/etc/zookeeper/conf/myid
+- name: create directory
+  file: path=/opt/mesosphere/zookeeper/conf state=directory
+- name: copy zookeeper config
+  template: src=zoo.cfg.j2 dest=/opt/mesosphere/zookeeper/conf/zoo.cfg backup=yes
+  notify:
+  - start zookeeper

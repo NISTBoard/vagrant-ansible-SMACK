@@ -1,0 +1,7 @@
+---
+
+mesos:
+  zookeeper_quorum: 1
+
+zookeeper:
+  zookeeper_server_1: 192.168.9.11:2888:3888
