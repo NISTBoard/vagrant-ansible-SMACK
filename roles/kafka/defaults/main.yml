@@ -1,0 +1,7 @@
+---
+
+kafka_version: 0.9.0.0
+kafka_name: kafka_2.11-{{ kafka_version }}
+kafka_mirror: http://apache.cs.uu.nl
+kafka_checksum_uri: https://dist.apache.org/repos/dist/release/kafka/{{ kafka_version }}/{{ kafka_name }}.tgz.md5
+kafka_password: $6$m5ahhji.w4d$GLJWoFejF9zBfeUii7sCbTEhkx26Ez2AZDmjUPP7g7oOJiAn53M.n4lxgz8sQQjatY4qra0dOQIP4KLgGwwN4/

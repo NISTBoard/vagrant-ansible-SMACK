@@ -15,3 +15,4 @@
   become: yes
   roles:
   - mesos-worker
+  - kafka

@@ -19,6 +19,11 @@ From the host:
 	MASTER=$(mesos-resolve `cat /etc/mesos/zk`)
 	mesos-execute --master=$MASTER --name="cluster-test" --command="sleep 5"
 
+### Test Kafka
+
+	echo "Hello, World" | ~/kafka/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic MyTopic > /dev/null
+	~/kafka/bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic MyTopic --from-beginning
+
 ## Troubleshooting
 
 - Run playbook manually
@@ -37,4 +42,5 @@ You might get this error after running `vagrant destroy && vagrant up` because t
 ## More information
 
 - https://open.mesosphere.com/getting-started/install/
+- https://www.digitalocean.com/community/tutorials/how-to-install-apache-kafka-on-ubuntu-14-04
 
