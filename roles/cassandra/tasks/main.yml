@@ -1,0 +1,18 @@
+---
+
+- name: Add Datastax repository
+  template:
+    src=datastax.repo.j2
+    dest=/etc/yum.repos.d/datastax.repo
+
+- name: Install Cassandra
+  yum: name=datastax-ddc state=present
+
+- name: Configure Cassandra
+  template:
+    src=cassandra.yaml.j2
+    dest=/etc/cassandra.yaml
+    backup=yes
+  notify:
+    - Start Cassandra
+

@@ -1,0 +1,9 @@
+cluster_name: 'MyCassandraCluster'
+num_tokens: 256
+seed_provider:
+  - class_name: org.apache.cassandra.locator.SimpleSeedProvider
+    parameters:
+         - seeds: "{{ cassandra.seeds }}"
+listen_address: {{ cassandra.listen_address }}
+rpc_address: {{ cassandra.rpc_address }}
+endpoint_snitch: GossipingPropertyFileSnitch

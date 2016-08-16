@@ -1,0 +1,10 @@
+---
+
+kafka:
+  zookeeper_hosts: 192.168.9.11:2181
+
+cassandra:
+  seeds: "192.168.9.12"
+  listen_address: "192.168.9.12"
+  rpc_address: "0.0.0.0"
+

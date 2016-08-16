@@ -16,3 +16,4 @@
   roles:
   - mesos-worker
   - kafka
+  - cassandra
