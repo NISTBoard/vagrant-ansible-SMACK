@@ -4,6 +4,7 @@ Mesos cluster. Tested with 2 nodes on VirtualBox.
 
 ## Run
 
+	curl http://apache.cs.uu.nl/spark/spark-1.6.1/spark-1.6.1-bin-hadoop2.6.tgz > spark-1.6.1-bin-hadoop2.6.tgz
 	vagrant up
 
 ## Test
@@ -23,6 +24,34 @@ From the host:
 
 	echo "Hello, World" | ~/kafka/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic MyTopic > /dev/null
 	~/kafka/bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic MyTopic --from-beginning
+
+### Test Spark in client mode
+
+	spark-submit \ 
+	--master mesos://192.168.9.11:5050 \ 
+	--deploy-mode client \ 
+	--total-executor-cores 1 \ 
+	--executor-memory 500M \ 
+	--supervise \ 
+	$SPARK_HOME/examples/src/main/python/pi.py 10
+
+or
+
+	spark-submit \ 
+	--master mesos://zk://192.168.9.11:2181/mesos \ 
+	--deploy-mode client \ 
+	--total-executor-cores 1 \ 
+	--executor-memory 500M \ 
+	--supervise \ 
+	$SPARK_HOME/examples/src/main/python/pi.py 10
+
+## Mesos UI
+
+	http://192.168.9.11:5050
+
+## Marathon UI
+
+	http://192.168.9.11:8080
 
 ## Troubleshooting
 

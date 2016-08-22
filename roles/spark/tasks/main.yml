@@ -1,0 +1,62 @@
+---
+
+- name: Download checksum
+  get_url:
+    url="{{ spark_checksum_uri }}"
+    dest="/root/{{ spark_package }}.md5"
+
+- name: Extract checksum
+  shell: cat /root/{{ spark_package }}.md5 | cut -d ':' -f2
+  register: spark_checksum
+
+- name: Download Spark
+  get_url:
+    url="{{ spark_mirror }}/spark/spark-{{spark_version}}/{{ spark_package }}"
+    dest="/root/{{ spark_name }}.tgz"
+    checksum="md5:{{ spark_checksum.stdout }}"
+
+- name: Unarchive Spark
+  unarchive:
+    src="/root/{{ spark_package }}"
+    dest="/opt/"
+    copy=no owner=root group=root
+    creates=/opt/{{ spark_name }}
+
+- name: Link Spark
+  file: path=/opt/spark state=link src=/opt/{{ spark_name }}
+
+- name: Add '/opt/spark/bin' to PATH
+  copy: content="pathmunge /opt/spark/bin"
+    dest=/etc/profile.d/spark.sh mode=755
+  when: ansible_os_family == "RedHat"
+  
+- name: Create SPARK_HOME variable
+  lineinfile:
+    dest=/etc/profile.d/spark.sh
+    state=present
+    line="export SPARK_HOME=/opt/spark"
+  when: ansible_os_family == "RedHat"
+
+- name: Add '/opt/spark/bin' to PATH
+  lineinfile:
+    dest=/etc/environment
+    state=present
+    backrefs=yes
+    regexp='export PATH=(["]*)((?!.*?/opt/spark/bin).*?)(["]*)$'
+    line="export PATH=\1\2:/opt/spark/bin\3"
+  when: ansible_os_family == "Debian"
+
+- name: Create config files
+  copy: src=/opt/spark/conf/spark-env.sh.template
+    dest=/opt/spark/conf/spark-env.sh
+    remote_src=yes mode=755
+
+- name: Set Spark environment variables
+  lineinfile:
+    dest=/opt/spark/conf/spark-env.sh
+    state=present
+    line="{{ item }}"
+  with_items:
+    - export SPARK_EXECUTOR_URI=/home/vagrant/sync/{{ spark_package }}
+    - export MESOS_NATIVE_JAVA_LIBRARY=/usr/local/lib/libmesos.so
+

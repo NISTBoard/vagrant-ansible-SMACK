@@ -10,6 +10,7 @@
   roles:
   - zookeeper
   - mesos-master
+  - spark
 
 - hosts: workers
   become: yes
