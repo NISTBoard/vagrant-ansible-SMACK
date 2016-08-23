@@ -1,8 +1,33 @@
 ---
 
+- name: Install packages
+  yum: pkg={{ item }} state=installed
+  with_items:
+    - ntp
+  when: ansible_os_family == "RedHat"
+  notify:
+    - Start ntpd
+
+- name: Install packages
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - ntp
+  when: ansible_os_family == "Debian"
+  notify:
+    - Start ntpd
+
 - name: build hosts file
   # ansible_default_ipv4 is set to vagrant's NAT interface, so we use ansible_eth1.ipv4
   lineinfile: dest=/etc/hosts regexp='.*{{ item }}$' line="{{ hostvars[item].ansible_eth1.ipv4.address }} {{item}}" state=present
   when: hostvars[item].ansible_default_ipv4.address is defined
   with_items: "{{ groups['all'] }}"
+
+- name: Set timezone
+  copy: content={{ timezone }} dest=/etc/timezone
+
+- name: Set localtime
+  copy: src="{{ localtime }}" dest=/etc/localtime remote_src=yes
+
+# TODO: in ansible 2.2.0, use the timezone module
+# timezone: name=Europe/Amsterdam
 

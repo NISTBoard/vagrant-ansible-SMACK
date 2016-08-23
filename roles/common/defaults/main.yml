@@ -1,0 +1,5 @@
+---
+
+#locale: nl_NL.UTF-8 UTF-8
+timezone: GMT+1
+localtime: /usr/share/zoneinfo/Europe/Amsterdam
