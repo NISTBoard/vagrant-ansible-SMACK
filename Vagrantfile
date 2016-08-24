@@ -10,7 +10,7 @@ subnet = "192.168.9"
 ip_range_start = 11
 
 vm_gui = false
-vm_cpus = 8
+vm_cpus = 4
 vm_memory = 2048
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
