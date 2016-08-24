@@ -1,16 +1,22 @@
 ---
 
-- name: add mesosphere repository
+- name: Add mesosphere repository
   yum:
     name: http://repos.mesosphere.com/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm
     state: present
-- name: install packages
+
+- name: Install packages
   yum:
     name: mesos
     state: present
-- name: set zookeeper connection string
+
+- name: Set zookeeper connection string
   copy: content="{{ mesos_.zookeeper_connection_string }}" dest=/etc/mesos/zk
-- name: set mesos master hostname
+
+- name: Set ip flag
+  copy: content="{{ ansible_host }}" dest=/etc/mesos-slave/ip
+
+- name: Set hostname flag
   copy: content="{{ ansible_host }}" dest=/etc/mesos-slave/hostname
   notify:
   - stop mesos master
