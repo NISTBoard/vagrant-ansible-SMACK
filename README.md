@@ -27,6 +27,8 @@ From the host:
 
 ### Test Spark in client mode
 
+From within the cluster:
+
 	spark-submit \ 
 	--master mesos://192.168.9.11:5050 \ 
 	--deploy-mode client \ 
@@ -53,6 +55,10 @@ or
 
 	http://192.168.9.11:8080
 
+## Spark UI (client mode)
+
+	http://192.168.9.11:4040
+
 ## Troubleshooting
 
 - Run playbook manually
@@ -68,8 +74,15 @@ You might get this error after running `vagrant destroy && vagrant up` because t
 
 	ansible --private-key=~/.vagrant.d/insecure_private_key -u vagrant -i staging -m setup all
 
+## Notes
+
+- The documentation of spark 1.6.1 is inconsistent when it comes to cluster mode support on mesos. In spark 2.0.0 support seems to have been improved.
+
 ## More information
 
 - https://open.mesosphere.com/getting-started/install/
 - https://www.digitalocean.com/community/tutorials/how-to-install-apache-kafka-on-ubuntu-14-04
+- http://spark.apache.org/docs/1.6.1/running-on-mesos.html
+- https://spark.apache.org/docs/1.6.1/submitting-applications.html
+
 
