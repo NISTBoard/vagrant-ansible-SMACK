@@ -1,6 +1,6 @@
 # vagrant-ansible-mesos
 
-Mesos cluster. Tested with 2 nodes on VirtualBox.
+Mesos cluster. Tested with 2 CentOS nodes on VirtualBox.
 
 ## Run
 
@@ -16,14 +16,21 @@ From the host:
 	echo "ruok" | nc 192.168.9.11 2181
 
 ### Test Mesos
-	
+
+On the master node:
+
 	MASTER=$(mesos-resolve `cat /etc/mesos/zk`)
 	mesos-execute --master=$MASTER --name="cluster-test" --command="sleep 5"
 
 ### Test Kafka
 
-	echo "Hello, World" | ~/kafka/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic MyTopic > /dev/null
-	~/kafka/bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic MyTopic --from-beginning
+	curl -X POST http://192.168.9.11:8080/v2/apps -H "Content-type: application/json" -d @kafka.marathon.json
+	/opt/kafka/kafka-topics.sh --zookeeper 192.168.9.11:2181 --create --replication-factor 1 --partitions 1 --topic MyTopic
+	/opt/kafka/bin/kafka-console-consumer.sh --zookeeper 192.168.9.11:2181 --topic MyTopic --from-beginning
+
+From within the cluster:
+
+	echo "Hello, World" | /opt/kafka/bin/kafka-console-producer.sh --broker-list 192.168.9.12:9093 --topic MyTopic > /dev/null
 
 ### Test Spark in client mode
 
@@ -77,6 +84,7 @@ You might get this error after running `vagrant destroy && vagrant up` because t
 ## Notes
 
 - The documentation of spark 1.6.1 is inconsistent when it comes to cluster mode support on mesos. In spark 2.0.0 support seems to have been improved.
+- Marathon installs `iptables` rules to deny access to applications running on the cluster from the outside world. To allow access, `haproxy` or `Mesos-DNS` can be used.
 
 ## More information
 

@@ -1,0 +1,9 @@
+{
+    "id": "kafka-broker", 
+    "cmd": "/opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties",
+    "ports": [9093],
+    "user": "kafka",
+    "cpus": 0.1,
+    "mem": 64.0,
+    "instances": 1
+}
