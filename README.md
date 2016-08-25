@@ -1,6 +1,7 @@
-# vagrant-ansible-mesos
+# vagrant-ansible-SMACK
 
-Mesos cluster. Tested with 2 CentOS nodes on VirtualBox.
+This is a possible implementation of the SMACK-stack. It can be done in many different ways.
+Tested with CentOS on VirtualBox.
 
 ## Run
 
